@@ -1,66 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Laravel Blog Backend**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a complete backend solution for a blog application, built with **Laravel**. It includes functionalities for uploading posts, managing images, and adding comments using **polymorphic relationships**. The project also supports **nested comments** (commenting on comments).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Features**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Post Management**
+   - Create, Read, Update, and Delete (CRUD) posts.
+   - Each post can have associated images and comments.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Image Management**
+   - Upload images.
+   - Images can also have comments.
 
-## Learning Laravel
+3. **Comment Management**
+   - Comment on posts, images, or even other comments.
+   - Supports nested comments using a parent-child relationship.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **Polymorphic Relationships**
+   - **`morphTo`** and **`morphMany`** relationships implemented:
+     - Comments can belong to multiple models (`Post`, `Image`, and other `Comment` objects).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+5. **API Endpoints**
+   - Endpoints for creating, updating, deleting, and retrieving comments.
+   - Count total comments for a given resource.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## **Technologies Used**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- **Backend**: Laravel (PHP)
+- **Database**: MySQL
+- **Tools**: Composer, Artisan CLI
+- **Dependencies**: Laravel's core packages
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## **Database Schema**
 
-## Contributing
+- **`posts` Table**
+  - `id` (Primary Key)
+  - `title` (String)
+  - `body` (Text)
+  - `timestamps`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **`images` Table**
+  - `id` (Primary Key)
+  - `url` (Path to the uploaded image)
+  - `timestamps`
 
-## Code of Conduct
+- **`comments` Table**
+  - `id` (Primary Key)
+  - `body` (Text)
+  - `commentable_id` & `commentable_type` (Polymorphic keys)
+  - `parent_id` (For nested comments, nullable)
+  - `timestamps`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## **Installation**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Follow these steps to set up the project locally:
 
-## License
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/laravel-blog-backend.git
+cd laravel-blog-backend
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Install dependencies
+Use Composer to install required dependencies:
+```bash
+composer install
+```
+
+### 3. Set up environment
+Copy the `.env.example` file and configure the database connection:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Update the `.env` file:
+```plaintext
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+### 4. Run migrations
+Run the database migrations to create necessary tables:
+```bash
+php artisan migrate
+```
+
+### 5. Run the server
+Start the local development server:
+```bash
+php artisan serve
+```
+Access the project at `http://127.0.0.1:8000`.
+
+---
+
+## **API Endpoints**
+
+Here’s a list of the main API endpoints:
+
+### **Posts**
+| Method   | Endpoint           | Description            |
+|----------|--------------------|------------------------|
+| `GET`    | `/api/posts`       | List all posts         |
+| `POST`   | `/api/posts`       | Create a new post      |
+| `PUT`    | `/api/posts/{id}`  | Update a post          |
+| `DELETE` | `/api/posts/{id}`  | Delete a post          |
+
+### **Comments**
+| Method   | Endpoint                                                       | Description                          |
+|----------|----------------------------------------------------------------|--------------------------------------|
+| `POST`   | `/api/comments/{commentableType}/{commentableId}`              | Create a comment                     |
+| `GET`    | `/api/comments/{commentableType}/{commentableId}`              | List all comments for a resource     |
+| `PUT`    | `/api/comments/{id}`                                           | Update a specific comment            |
+| `DELETE` | `/api/comments/{id}`                                           | Delete a comment                     |
+| `GET`    | `/api/comments/count/{commentableType}/{commentableId}`        | Count comments for a specific entity |
+
+---
+
+## **Code Overview**
+
+### Polymorphic Relationships
+- **Posts and Images**:  
+  Each can have multiple comments using the `morphMany` relationship.  
+- **Comments**:  
+  Use a `morphTo` relationship to belong to `Post`, `Image`, or another `Comment` for nesting.
+
+#### Example: Comment Model
+```php
+public function commentable()
+{
+    return $this->morphTo();
+}
+
+public function replies()
+{
+    return $this->hasMany(Comment::class, 'parent_id');
+}
+```
+
+---
+
+## **How to Test**
+
+You can test the API using tools like **Postman** or **cURL**.
+
+### Example: Create a Comment
+**Request:**
+```http
+POST /api/comments/post/1
+Content-Type: application/json
+
+{
+    "body": "This is a comment."
+}
+```
+
+**Response:**
+```json
+{
+    "id": 1,
+    "body": "This is a comment.",
+    "commentable_id": 1,
+    "commentable_type": "App\\Models\\Post",
+    "created_at": "2024-06-17 10:00:00",
+    "updated_at": "2024-06-17 10:00:00"
+}
+```
+
+---
+
+## **Future Enhancements**
+
+- Add authentication for user roles (admin, guest, etc.).
+- Add pagination for comments and posts.
+- Implement file uploads for images with validation.
+
+---
+
+## **License**
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## **Author**
+
+**Samir Ahmad**  
+LinkedIn: [samir Ahmad](https://www.linkedin.com/in/samir-ahmad-07255224a/)  
+GitHub: [samir-sudhir](https://github.com/samir-sudhir)  
